@@ -23,7 +23,15 @@ module.exports = (sequelize, DataTypes) => {
   Pessoas.init({
     nome: DataTypes.STRING,
     ativo: DataTypes.BOOLEAN,
-    email: DataTypes.STRING,
+    email: {
+    type:  DataTypes.STRING,
+    validate: {
+      isEmail: {
+        args: true,
+        msg: 'Dados do tupo email errado'
+      }
+    }
+    },
     role: DataTypes.STRING
   }, {
     sequelize,
@@ -31,6 +39,9 @@ module.exports = (sequelize, DataTypes) => {
     paranoid: true,
     defaultScope: {
       where: { ativo: true }
+    },
+    scopes: {
+      todos: { where: {} }
     }
   });
   return Pessoas;
